@@ -1,4 +1,4 @@
-const API_BASE = 'https://nish.space/my_neta';
+const API_BASE = 'https://corsproxy.io/?url=https://nish.space/my_neta';
 
 const MP_YEARS = ['2024', '2019', '2014', '2009', '2004'];
 
