@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neta Dossier</title>
+</head>
+<body>
+  <h1>Neta Dossier</h1>
+  <div id="output">Loading...</div>
+
+  <script src="data.js"></script>
+  <script>
+    fetch_pool().then(pool => {
+      document.getElementById('output').textContent = 'Loaded ' + pool.length + ' candidates';
+    }).catch(err => {
+      document.getElementById('output').textContent = 'Error: ' + err.message;
+    });
+  </script>
+</body>
+</html>
