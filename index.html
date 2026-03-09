@@ -6,16 +6,61 @@
   <title>Neta Dossier</title>
 </head>
 <body>
-  <h1>Neta Dossier</h1>
-  <div id="output">Loading...</div>
+  <header>
+    <h1>Neta Dossier</h1>
+    <div>
+      Correct: <span id="scoreCorrect">0</span>
+      Total: <span id="scoreTotal">0</span>
+      Streak: <span id="scoreStreak">0</span>
+    </div>
+  </header>
+
+  <p>Tap the candidate with MORE criminal cases</p>
+
+  <div id="errorMsg" style="color:red;"></div>
+
+  <div id="duelContainer" style="display:none;">
+    <div style="display:flex; gap:2rem;">
+
+      <div id="cardA" onclick="make_guess('A')" style="border:1px solid #000; padding:1rem; cursor:pointer;">
+        <div><span id="typeA">—</span> <span id="yearA">—</span></div>
+        <div id="nameA">—</div>
+        <div id="partyA">—</div>
+        <div id="constA">—</div>
+        <div id="stateA">—</div>
+        <div id="hiddenA">? Tap to guess</div>
+        <div id="revealedA" style="display:none;">Cases: <span id="crimeCountA">0</span></div>
+      </div>
+
+      <div>VS</div>
+
+      <div id="cardB" onclick="make_guess('B')" style="border:1px solid #000; padding:1rem; cursor:pointer;">
+        <div><span id="typeB">—</span> <span id="yearB">—</span></div>
+        <div id="nameB">—</div>
+        <div id="partyB">—</div>
+        <div id="constB">—</div>
+        <div id="stateB">—</div>
+        <div id="hiddenB">? Tap to guess</div>
+        <div id="revealedB" style="display:none;">Cases: <span id="crimeCountB">0</span></div>
+      </div>
+
+    </div>
+
+    <div id="resultBar" style="display:none; margin-top:1rem;">
+      <div id="resultText">—</div>
+      <div id="resultSub">—</div>
+      <button onclick="next_round()">Next</button>
+    </div>
+  </div>
+
+  <div id="gameoverScreen" style="display:none;">
+    <h2>Game Over</h2>
+    <div id="gameoverScore">—</div>
+    <button onclick="restart_game()">Play again</button>
+  </div>
 
   <script src="data.js"></script>
-  <script>
-    fetch_pool().then(pool => {
-      document.getElementById('output').textContent = 'Loaded ' + pool.length + ' candidates';
-    }).catch(err => {
-      document.getElementById('output').textContent = 'Error: ' + err.message;
-    });
-  </script>
+  <script src="game.js"></script>
+  <script>start_game();</script>
 </body>
 </html>

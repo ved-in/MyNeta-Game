@@ -38,30 +38,36 @@ function pick_mla_fields(mla, state_name)
   };
 }
 
-async function fetch_pool()
+async function fetch_pool(active_types, active_years)
 {
   const all = [];
 
-  for (let i = 0; i < MP_YEARS.length; i++) {
-    const year = MP_YEARS[i];
-    const response = await fetch(API_BASE + '/mps/' + year);
-    const data = await response.json();
-    const mps = data.mps || [];
+  if (active_types.has('mp')) {
+    for (let i = 0; i < MP_YEARS.length; i++) {
+      const year = MP_YEARS[i];
+      if (!active_years.has(year)) continue;
 
-    for (let j = 0; j < mps.length; j++) {
-      all.push(pick_mp_fields(mps[j], year));
+      const response = await fetch(API_BASE + '/mps/' + year);
+      const data = await response.json();
+      const mps = data.mps || [];
+
+      for (let j = 0; j < mps.length; j++) {
+        all.push(pick_mp_fields(mps[j], year));
+      }
     }
   }
 
-  for (let i = 0; i < MLA_STATES.length; i++) {
-    const state = MLA_STATES[i];
-    const response = await fetch(API_BASE + '/mlas/' + state);
-    const data = await response.json();
-    const mlas = data.mlas || [];
-    const state_name = data.state || state.replace(/_/g, ' ');
+  if (active_types.has('mla')) {
+    for (let i = 0; i < MLA_STATES.length; i++) {
+      const state = MLA_STATES[i];
+      const response = await fetch(API_BASE + '/mlas/' + state);
+      const data = await response.json();
+      const mlas = data.mlas || [];
+      const state_name = data.state || state.replace(/_/g, ' ');
 
-    for (let j = 0; j < mlas.length; j++) {
-      all.push(pick_mla_fields(mlas[j], state_name));
+      for (let j = 0; j < mlas.length; j++) {
+        all.push(pick_mla_fields(mlas[j], state_name));
+      }
     }
   }
 
