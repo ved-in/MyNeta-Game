@@ -7,9 +7,59 @@ let max_streak = 0;
 let current_a = null;
 let current_b = null;
 let answered = false;
+let active_types = new Set(['mp', 'mla']);
+let active_years = new Set(['2024', '2019', '2014']);
 
 const LIVES = 5;
 let lives = LIVES;
+
+function toggle_filter(kind, val, btn)
+{
+  if (kind === 'type') {
+    if (active_types.has(val)) {
+      if (active_types.size === 1) return;
+      active_types.delete(val);
+      btn.classList.remove('active');
+    } else {
+      active_types.add(val);
+      btn.classList.add('active');
+    }
+    update_year_buttons_state();
+  } else {
+    if (!active_types.has('mp')) return;
+
+    if (active_years.has(val)) {
+      if (active_years.size === 1) return;
+      active_years.delete(val);
+      btn.classList.remove('active');
+    } else {
+      active_years.add(val);
+      btn.classList.add('active');
+    }
+  }
+
+  pool = [];
+  used_indices.clear();
+  restart_game();
+}
+
+function update_year_buttons_state()
+{
+  const year_buttons = document.querySelectorAll('#yearFilters .filter-btn');
+  const mp_active = active_types.has('mp');
+
+  for (let i = 0; i < year_buttons.length; i++) {
+    if (mp_active) {
+      year_buttons[i].disabled = false;
+      year_buttons[i].style.opacity = '1';
+      year_buttons[i].style.cursor = 'pointer';
+    } else {
+      year_buttons[i].disabled = true;
+      year_buttons[i].style.opacity = '0.3';
+      year_buttons[i].style.cursor = 'not-allowed';
+    }
+  }
+}
 
 function get_random_index(max)
 {
@@ -85,10 +135,11 @@ async function next_round()
 {
   reset_card('cardA');
   reset_card('cardB');
+  document.getElementById('resultBar').style.display = 'none';
 
   if (pool.length === 0) {
     try {
-      pool = await fetch_pool(new Set(['mp', 'mla']), new Set(['2024', '2019', '2014']));
+      pool = await fetch_pool(active_types, active_years);
     } catch (e) {
       document.getElementById('errorMsg').textContent = 'Failed to load data. Please try again.';
       return;
@@ -191,13 +242,13 @@ function restart_game()
   document.getElementById('resultBar').style.display = 'none';
 
   update_score();
-  next_round();
+  start_game();
 }
 
 async function start_game()
 {
   try {
-    pool = await fetch_pool(new Set(['mp', 'mla']), new Set(['2024', '2019', '2014']));
+    pool = await fetch_pool(active_types, active_years);
   } catch (e) {
     document.getElementById('errorMsg').textContent = 'Could not reach the API: ' + e.message;
     return;

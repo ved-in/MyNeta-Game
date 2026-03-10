@@ -15,6 +15,22 @@
     </div>
   </header>
 
+  <div>
+    <span>Type:</span>
+    <div id="typeFilters">
+      <button class="filter-btn active" onclick="toggle_filter('type','mp',this)">MPs</button>
+      <button class="filter-btn active" onclick="toggle_filter('type','mla',this)">MLAs</button>
+    </div>
+    <span>Year (MPs):</span>
+    <div id="yearFilters">
+      <button class="filter-btn active" onclick="toggle_filter('year','2024',this)">2024</button>
+      <button class="filter-btn active" onclick="toggle_filter('year','2019',this)">2019</button>
+      <button class="filter-btn active" onclick="toggle_filter('year','2014',this)">2014</button>
+      <button class="filter-btn" onclick="toggle_filter('year','2009',this)">2009</button>
+      <button class="filter-btn" onclick="toggle_filter('year','2004',this)">2004</button>
+    </div>
+  </div>
+
   <p>Tap the candidate with MORE criminal cases</p>
 
   <div id="errorMsg" style="color:red;"></div>
